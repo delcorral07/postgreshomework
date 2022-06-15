@@ -33,7 +33,7 @@ public class KingController {
     @GetMapping("/{kingId}")
     public ResponseEntity<KingDTO> retrieveKing(@PathVariable("kingId") String kingId) {
         KingDTO tempKing = kingService.retrieveKingById(kingId);
-        if(!tempKing.getId().equals("")) {
+        if(tempKing.getId().equals("")) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
             return new ResponseEntity<>(tempKing, HttpStatus.OK);

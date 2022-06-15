@@ -86,7 +86,7 @@ public class KingController {
     }
 
     @GetMapping({"/country/{countryName}"})
-    public ResponseEntity<List<KingDTO>> retrieveKingsByCountryLike(@PathVariable("countryName") String countryName) {
+    public ResponseEntity<List<KingDTO>> retrieveKingsByCountryName(@PathVariable("countryName") String countryName) {
         List<KingDTO> kingDTOList = kingService.retrieveKingByCountry(countryName);
         return kingDTOList.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(kingDTOList, HttpStatus.OK);
     }

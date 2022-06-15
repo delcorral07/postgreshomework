@@ -58,9 +58,9 @@ public class HouseController {
         };
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteHouse(@RequestBody HouseDTO houseDTO) {
-        return switch (houseService.deleteHouse(houseDTO.getId())) {
+    @DeleteMapping({"/{houseId}"})
+    public ResponseEntity<Void> deleteHouse(@RequestBody String houseId) {
+        return switch (houseService.deleteHouse(houseId)) {
             case 404 -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case 400 -> new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             default -> new ResponseEntity<>(HttpStatus.OK);

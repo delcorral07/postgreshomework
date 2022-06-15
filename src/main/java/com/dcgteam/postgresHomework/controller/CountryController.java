@@ -59,9 +59,9 @@ public class CountryController {
         };
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteCountry(@RequestBody CountryDTO countryDTO) {
-        return switch (countryService.deleteCountry(countryDTO.getId())) {
+    @DeleteMapping({"/{countryId}"})
+    public ResponseEntity<Void> deleteCountry(@PathVariable String countryId) {
+        return switch (countryService.deleteCountry(countryId)) {
             case 404 -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case 400 -> new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             default -> new ResponseEntity<>(HttpStatus.OK);

@@ -8,6 +8,7 @@ import com.dcgteam.postgresHomework.model.Country;
 import com.dcgteam.postgresHomework.model.House;
 import com.dcgteam.postgresHomework.repositories.HouseRepository;
 import com.dcgteam.postgresHomework.services.services.HouseService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class HouseServiceImpl implements HouseService {
     private final int SUCCESS_CODE = 200;
     private final int BAD_REQUEST = 400;
     private final int NOT_FOUND = 404;
+    private final int CONSTRAINT_VIOLATION = 409;
 
     public HouseServiceImpl(HouseRepository houseRepository, HouseToHouseDTO houseToHouseDTO,
                             HouseDTOtoHouse houseDTOToHouse) {
@@ -68,7 +70,12 @@ public class HouseServiceImpl implements HouseService {
     public int deleteHouse(String id) {
         HouseDTO tempHouse = this.retrieveHouseById(id);
         if(!tempHouse.getId().isEmpty()){
-            houseRepository.deleteById(id);
+            try{
+                houseRepository.deleteById(id);
+            }catch (DataIntegrityViolationException e){
+                return CONSTRAINT_VIOLATION;
+            }
+
             return SUCCESS_CODE;
         }
         return NOT_FOUND;

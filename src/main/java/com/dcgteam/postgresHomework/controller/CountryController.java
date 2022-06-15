@@ -64,6 +64,7 @@ public class CountryController {
         return switch (countryService.deleteCountry(countryId)) {
             case 404 -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case 400 -> new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            case 409 -> new ResponseEntity<>(HttpStatus.CONFLICT);
             default -> new ResponseEntity<>(HttpStatus.OK);
         };
     }

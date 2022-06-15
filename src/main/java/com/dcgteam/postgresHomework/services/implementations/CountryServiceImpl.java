@@ -6,7 +6,9 @@ import com.dcgteam.postgresHomework.dto.converters.CountryToCountryDTO;
 import com.dcgteam.postgresHomework.model.Country;
 import com.dcgteam.postgresHomework.repositories.CountryRepository;
 import com.dcgteam.postgresHomework.services.services.CountryService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class CountryServiceImpl implements CountryService {
     private final int SUCCESS_CODE = 200;
     private final int BAD_REQUEST = 400;
     private final int NOT_FOUND = 404;
+    private final int CONSTRAINT_VIOLATION = 409;
 
     @Autowired
     public CountryServiceImpl(CountryRepository countryRepository, CountryDTOtoCountry countryDTOtoCountry,
@@ -63,7 +66,11 @@ public class CountryServiceImpl implements CountryService {
     public int deleteCountry(String id) {
         CountryDTO tempCountry = this.retrieveCountryById(id);
         if(!tempCountry.getId().isEmpty()){
-            countryRepository.deleteById(id);
+            try{
+                countryRepository.deleteById(id);
+            }catch (DataIntegrityViolationException e){
+                return CONSTRAINT_VIOLATION;
+            }
             return SUCCESS_CODE;
         }
         return NOT_FOUND;

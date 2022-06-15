@@ -57,7 +57,7 @@ public class KingController {
         return switch (kingService.updateKing(kingId, king)) {
             case 404 -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case 400 -> new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            default -> new ResponseEntity<>(HttpStatus.OK);
+            default -> new ResponseEntity<>(HttpStatus.NO_CONTENT);
         };
     }
 
@@ -66,7 +66,7 @@ public class KingController {
         return switch (kingService.deleteKing(kingId)) {
             case 404 -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case 400 -> new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            default -> new ResponseEntity<>(HttpStatus.OK);
+            default -> new ResponseEntity<>(HttpStatus.NO_CONTENT);
         };
     }
 

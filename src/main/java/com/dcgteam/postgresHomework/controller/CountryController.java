@@ -55,7 +55,7 @@ public class CountryController {
         return switch (countryService.updateCountry(countryId, countryDTO)) {
             case 404 -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case 400 -> new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            default -> new ResponseEntity<>(HttpStatus.OK);
+            default -> new ResponseEntity<>(HttpStatus.NO_CONTENT);
         };
     }
 
@@ -65,7 +65,7 @@ public class CountryController {
             case 404 -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case 400 -> new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             case 409 -> new ResponseEntity<>(HttpStatus.CONFLICT);
-            default -> new ResponseEntity<>(HttpStatus.OK);
+            default -> new ResponseEntity<>(HttpStatus.NO_CONTENT);
         };
     }
 

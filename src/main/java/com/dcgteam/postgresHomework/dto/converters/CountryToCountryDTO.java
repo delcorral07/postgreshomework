@@ -11,7 +11,7 @@ public class CountryToCountryDTO implements Converter<Country, CountryDTO> {
     @Override
     public CountryDTO convert(Country country) {
         CountryDTO countryDTO = new CountryDTO();
-        countryDTO.setId(country.getId());
+//        countryDTO.setId(country.getId());
         countryDTO.setName(country.getName());
         return countryDTO;
     }

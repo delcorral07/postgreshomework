@@ -88,7 +88,7 @@ public class HouseServiceImpl implements HouseService {
             House houseToUpdate = houseDTOToHouse.convert(house);
             houseToUpdate.setId(id);
             tempHouse = houseToHouseDTO.convert(houseRepository.save(houseToUpdate));
-            status = tempHouse.getId().equals(house.getId()) ? SUCCESS_CODE : BAD_REQUEST;
+            status = tempHouse.getId().equals(house.getId()) ? SUCCESS_CODE : BAD_REQUEST; //Corregir bad request
         }
         return status;
     }

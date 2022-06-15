@@ -32,8 +32,7 @@ public class KingServiceImpl implements KingService {
 
     @Override
     public KingDTO retrieveKingById(String id) {
-        King tempKing = kingRepository.findById(id).orElse(new King());
-        return tempKing.getId().isEmpty() ? new KingDTO() : kingToKingDTO.convert(tempKing);
+        return kingToKingDTO.convert(kingRepository.findById(id).orElse(new King()));
     }
 
     @Override

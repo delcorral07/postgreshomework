@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 public class HouseDTO implements Serializable {
 
-    private String id = "";;
+    private String id = "";
     private String name = "";
     private CountryDTO country = new CountryDTO();
 

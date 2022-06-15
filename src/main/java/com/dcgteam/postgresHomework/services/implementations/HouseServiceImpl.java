@@ -45,8 +45,7 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public HouseDTO retrieveHouseById(String id) {
-        House tempHouse = houseRepository.findById(id).orElse(new House());
-        return tempHouse.getId().isEmpty() ? new HouseDTO() : houseToHouseDTO.convert(tempHouse);
+        return houseToHouseDTO.convert(houseRepository.findById(id).orElse(new House()));
     }
 
     @Override

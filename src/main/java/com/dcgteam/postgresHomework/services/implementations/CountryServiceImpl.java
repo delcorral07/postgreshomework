@@ -6,6 +6,7 @@ import com.dcgteam.postgresHomework.dto.converters.CountryToCountryDTO;
 import com.dcgteam.postgresHomework.model.Country;
 import com.dcgteam.postgresHomework.repositories.CountryRepository;
 import com.dcgteam.postgresHomework.services.services.CountryService;
+import lombok.extern.java.Log;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Log
 public class CountryServiceImpl implements CountryService {
 
     private CountryToCountryDTO countryToCountryDTO;
@@ -44,14 +46,12 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryDTO retrieveCountryById(String id) {
-        Country tempCountry = countryRepository.findById(id).orElse(new Country());
-        return tempCountry.getId().isEmpty() ? new CountryDTO() : countryToCountryDTO.convert(tempCountry);
+        return countryToCountryDTO.convert(countryRepository.findById(id).orElse(new Country()));
     }
 
     @Override
     public CountryDTO retrieveByCountryName(String name) {
-        Country tempCountry = countryRepository.findByName(name).orElse(new Country());
-        return tempCountry.getId().isEmpty() ? new CountryDTO() : countryToCountryDTO.convert(tempCountry);
+        return countryToCountryDTO.convert(countryRepository.findByName(name).orElse(new Country()));
     }
 
     @Override
@@ -69,6 +69,7 @@ public class CountryServiceImpl implements CountryService {
             try{
                 countryRepository.deleteById(id);
             }catch (DataIntegrityViolationException e){
+                e.printStackTrace();
                 return CONSTRAINT_VIOLATION;
             }
             return SUCCESS_CODE;

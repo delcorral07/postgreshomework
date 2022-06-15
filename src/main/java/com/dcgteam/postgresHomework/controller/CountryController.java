@@ -34,8 +34,9 @@ public class CountryController {
     }
 
     @GetMapping("/name/{countryName}")
-    public CountryDTO retrieveByCountryName(@PathVariable("countryName") String countryName) {
-        return countryService.retrieveByCountryName(countryName);
+    public ResponseEntity<CountryDTO> retrieveByCountryName(@PathVariable("countryName") String countryName) {
+        CountryDTO c = countryService.retrieveByCountryName(countryName);
+        return c.getId().isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(c, HttpStatus.OK);
     }
 
     @PostMapping({"","/"})

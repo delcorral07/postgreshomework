@@ -1,10 +1,23 @@
 package com.dcgteam.postgreshomework.services.implementations;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
+
+import com.dcgteam.postgreshomework.controller.CountryController;
+import com.dcgteam.postgreshomework.controller.HouseController;
+import com.dcgteam.postgreshomework.controller.KingController;
 import com.dcgteam.postgreshomework.model.dto.KingDTO;
 import com.dcgteam.postgreshomework.model.King;
 import com.dcgteam.postgreshomework.repositories.KingRepository;
 import com.dcgteam.postgreshomework.services.services.KingService;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.Affordance;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mediatype.AffordanceModelFactory;
+import org.springframework.hateoas.mediatype.Affordances;
+import org.springframework.hateoas.server.core.SpringAffordanceBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,13 +44,28 @@ public class KingServiceImpl implements KingService {
 
     @Override
     public KingDTO retrieveKingById(String id) {
-        return modelMapper.map(kingRepository.findById(id).orElse(new King()), KingDTO.class);
+        KingDTO kingDTO = modelMapper.map(kingRepository.findById(id)
+                .orElse(new King()), KingDTO.class);
+        if(!kingDTO.getId().equals("")) {
+            addLinksToKingDTO(kingDTO);
+        }
+        return kingDTO;
+    }
+
+    public void addLinksToKingDTO(KingDTO kingDTO){
+        kingDTO.add(linkTo(methodOn(KingController.class).retrieveKings()).withRel("kings"));
+        kingDTO.add(linkTo(methodOn(KingController.class).updateKing(kingDTO.getId(),kingDTO)).withRel("update"));
+        kingDTO.add(linkTo(methodOn(KingController.class).deleteKing(kingDTO.getId())).withRel("delete").withType("delete"));
     }
 
     @Override
     public List<KingDTO> retrieveKings() {
         List<KingDTO> kingList = new ArrayList<>();
-        kingRepository.findAll().forEach(king -> kingList.add(modelMapper.map(king,KingDTO.class)));
+        kingRepository.findAll().forEach(king -> {
+            KingDTO kingDTO = modelMapper.map(king, KingDTO.class);
+            addLinksToKingDTO(kingDTO);
+            kingList.add(kingDTO);
+        });
         return kingList;
     }
 

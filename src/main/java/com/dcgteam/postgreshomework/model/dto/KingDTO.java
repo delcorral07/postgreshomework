@@ -1,11 +1,12 @@
 package com.dcgteam.postgreshomework.model.dto;
 
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 
 @Data
-public class KingDTO implements Serializable {
+public class KingDTO extends RepresentationModel<KingDTO> implements Serializable {
 
     private String id;
     private String name;
